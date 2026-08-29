@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<title>Саят — по месяцам</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;padding:0}
+  img,svg{max-width:100%}
+</style>
+</head>
+<body>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --s1:#2a78d6; --s2:#eb6834; --s4:#eda100; --s5:#e87ba4; --s7:#4a3aa7;
+    --good:#0ca30c; --tip-bg:#0b0b0b; --tip-fg:#ffffff;
+    font-family: system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--page); color:var(--text-primary);
+  }
+  @media (prefers-color-scheme: dark){ :root:where(:not([data-theme="light"])) .viz-root{
+    color-scheme:dark; --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --s1:#3987e5; --s2:#d95926; --s4:#c98500; --s5:#d55181; --s7:#9085e9;
+    --tip-bg:#f4f4f2; --tip-fg:#0b0b0b; } }
+  :root[data-theme="dark"] .viz-root{
+    color-scheme:dark; --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --s1:#3987e5; --s2:#d95926; --s4:#c98500; --s5:#d55181; --s7:#9085e9;
+    --tip-bg:#f4f4f2; --tip-fg:#0b0b0b; }
+  *{box-sizing:border-box} body{margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 80px}
+  h1{font-size:1.55rem;margin:0 0 4px}
+  .sub{color:var(--text-secondary);margin:0 0 24px;font-size:0.95rem;line-height:1.5}
+  .card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:20px}
+  .card h2{font-size:1.05rem;margin:0 0 6px}
+  .card .note{color:var(--text-muted);font-size:0.82rem;margin:0 0 16px;line-height:1.55}
+  .win{border:2px solid var(--good);background:color-mix(in srgb,var(--good) 5%,var(--surface-1))}
+  .win h2{font-size:1.12rem;display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .win .badge{background:var(--good);color:#fff;font-size:0.7rem;font-weight:700;
+    padding:3px 9px;border-radius:20px;letter-spacing:.03em;white-space:nowrap}
+  .metric{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;
+    padding:13px 0;border-bottom:1px solid var(--border)}
+  .metric:last-of-type{border-bottom:none}
+  .metric .what{flex:1 1 210px;font-size:0.92rem;color:var(--text-secondary)}
+  .metric .was{font-size:0.95rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+  .metric .arrow{color:var(--text-muted)}
+  .metric .now{font-size:1.28rem;font-weight:700;color:var(--good);font-variant-numeric:tabular-nums}
+  .metric .plus{font-size:0.88rem;color:var(--good);font-weight:600;font-variant-numeric:tabular-nums}
+  .bigline{margin-top:16px;padding:14px 16px;background:var(--page);
+    border:1px solid var(--border);border-radius:10px;font-size:1.02rem;line-height:1.6}
+  .bigline b{color:var(--good);font-size:1.15rem}
+  .plain{margin-top:14px;font-size:0.9rem;line-height:1.65;color:var(--text-secondary)}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+  .kpi{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:help}
+  .kpi .val{font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums}
+  .kpi .lbl{color:var(--text-secondary);font-size:0.76rem;margin-top:3px;display:flex;align-items:center;gap:5px}
+  .kpi .lbl::after{content:"?";display:inline-flex;align-items:center;justify-content:center;
+    width:13px;height:13px;border-radius:50%;border:1px solid var(--text-muted);
+    color:var(--text-muted);font-size:9px;font-weight:700;flex-shrink:0}
+  [data-tip]{position:relative}
+  [data-tip]:hover::after,[data-tip]:focus-visible::after{
+    content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:0;
+    min-width:210px;max-width:300px;background:var(--tip-bg);color:var(--tip-fg);
+    padding:9px 11px;border-radius:8px;font-size:0.76rem;font-weight:400;line-height:1.45;
+    z-index:50;white-space:normal;box-shadow:0 4px 16px rgba(0,0,0,0.22);pointer-events:none}
+  table{width:100%;border-collapse:collapse;font-size:0.85rem}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--grid)}
+  th{color:var(--text-muted);font-weight:500;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.03em;cursor:help}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr.best td{background:color-mix(in srgb,var(--good) 9%,transparent);font-weight:600}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  svg text{fill:var(--text-secondary);font-size:11px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:0.8rem;color:var(--text-secondary);margin-top:10px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .swatch{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .bar-row{display:flex;align-items:center;gap:10px;margin:7px 0}
+  .bar-label{width:74px;font-size:0.82rem;color:var(--text-secondary);flex-shrink:0}
+  .bar-track{flex:1;background:var(--grid);border-radius:4px;height:19px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:4px}
+  .bar-val{font-size:0.78rem;color:var(--text-secondary);width:118px;text-align:right;font-variant-numeric:tabular-nums;flex-shrink:0}
+  .nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+  .nav a{font-size:0.82rem;text-decoration:none;color:var(--text-secondary);border:1px solid var(--border);
+    background:var(--surface-1);padding:6px 12px;border-radius:20px}
+  .nav a:hover{border-color:var(--good);color:var(--good)}
+  footer{color:var(--text-muted);font-size:0.78rem;margin-top:30px;line-height:1.65}
+
+  /* --- Мобильная версия --- */
+  @media (max-width:640px){
+    .wrap{padding:20px 14px 60px}
+    h1{font-size:1.25rem}
+    .sub{font-size:0.87rem}
+    .card{padding:16px 14px;border-radius:10px}
+    .card h2{font-size:0.98rem}
+    .win h2{font-size:1rem;gap:7px}
+    .win .badge{font-size:0.65rem;padding:2px 8px}
+    .metric{padding:11px 0;gap:7px}
+    .metric .what{flex:1 1 100%;font-size:0.87rem;margin-bottom:2px}
+    .metric .was{font-size:0.87rem}
+    .metric .now{font-size:1.15rem}
+    .metric .plus{font-size:0.82rem}
+    .bigline{font-size:0.92rem;padding:12px 13px}
+    .bigline b{font-size:1.05rem}
+    .plain{font-size:0.86rem}
+    .kpi-grid{grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:9px}
+    .kpi{padding:11px 12px}
+    .kpi .val{font-size:1.15rem}
+    .kpi .lbl{font-size:0.71rem}
+    .bar-label{width:58px;font-size:0.75rem}
+    .bar-val{width:92px;font-size:0.71rem}
+    th,td{padding:6px 7px;font-size:0.78rem}
+    th{font-size:0.66rem}
+    .nav{gap:7px;margin-bottom:16px}
+    .nav a{font-size:0.76rem;padding:5px 10px}
+    footer{font-size:0.73rem}
+    [data-tip]:hover::after,[data-tip]:focus-visible::after{
+      position:fixed;left:12px;right:12px;bottom:14px;top:auto;min-width:0;max-width:none;
+      font-size:0.82rem;box-shadow:0 -2px 24px rgba(0,0,0,0.3)}
+  }
+</style>
+<div class="viz-root">
+<div class="wrap">
+  <h1>Баня «Саят» — статистика по месяцам</h1>
+  <p class="sub">266 рукописных отчётов, 26 фев — 28 авг 2026. Все суммы в тенге. Прибыль = деньги от гостей минус себестоимость кабины (1650 ₸/час), доля мастера по пилингу и 50% на еду с напитками. Наведите курсор на любой показатель — появится пояснение.</p>
+
+  <div class="nav">
+    <a href="#win1">Победа 1: будни</a>
+    <a href="#win2">Победа 2: работа до 3:00</a>
+    <a href="#table">Таблица по месяцам</a>
+    <a href="#profit">Выручка и прибыль</a>
+    <a href="#wd">Будни vs выходные</a>
+    <a href="#aov">Средний чек</a>
+    <a href="index.html" style="border-color:var(--good);color:var(--good)">→ Общий отчёт</a>
+  </div>
+
+  <div class="card win" id="win1">
+    <h2><span class="badge">ПОБЕДА 1</span> Скидка на будни: 4000 → 3000 ₸/час</h2>
+    <div class="metric">
+      <div class="what">Часов кабин продаётся за один будний день</div>
+      <div class="was">было 4.04 ч</div><div class="arrow">→</div>
+      <div class="now">8.03 ч</div><div class="plus">+3.99 ч (+99%)</div>
+    </div>
+    <div class="metric">
+      <div class="what">Прибыль с одного буднего дня</div>
+      <div class="was">было 19 403 ₸</div><div class="arrow">→</div>
+      <div class="now">33 278 ₸</div><div class="plus">+13 875 ₸ (+72%)</div>
+    </div>
+    <div class="metric">
+      <div class="what">Гостей приходит за один будний день</div>
+      <div class="was">было 2.44</div><div class="arrow">→</div>
+      <div class="now">4.35</div><div class="plus">+1.91 (+78%)</div>
+    </div>
+    <div class="bigline">В пересчёте на месяц (21.7 будних дней): <b>+301 000 ₸ прибыли</b><br>
+      <span style="font-size:0.87rem;color:var(--text-secondary)">Из них около <b style="font-size:1rem">209 000 ₸</b> — заслуга именно скидки. Остальное — общий августовский подъём: в выходные, где цену не трогали, выручка тоже выросла на 21%.</span></div>
+    <p class="plain"><b>Простыми словами:</b> вы снизили цену на четверть, а кабины в будни стали работать вдвое дольше. Каждый будний день теперь приносит почти на 14 000 ₸ прибыли больше, чем весной. Объём с запасом перекрыл скидку — это доказано тем, что в выходные, где цена осталась прежней, такого скачка не было.</p>
+    <p class="plain" style="color:var(--text-muted);font-size:0.84rem">Сравнение: август против среднего за март–июль. Только будни (Пн–Пт), только прибыль после всех расходов. Гости, бравшие бесплатный час по разовой акции 25 августа, в расчёт не включены — учтены лишь те, кто платил за первый час.</p>
+  </div>
+
+  <div class="card win" id="win2">
+    <h2><span class="badge">ПОБЕДА 2</span> Работа до 3:00 ночи (с 5 августа)</h2>
+    <div class="metric">
+      <div class="what">Ночей в месяц баня работала после полуночи</div>
+      <div class="was">было 1–3</div><div class="arrow">→</div>
+      <div class="now">20 ночей</div><div class="plus">из 28</div>
+    </div>
+    <div class="metric">
+      <div class="what">Гостей, оставшихся после полуночи</div>
+      <div class="was">было 1–3 за месяц</div><div class="arrow">→</div>
+      <div class="now">28 за месяц</div><div class="plus">×10 больше</div>
+    </div>
+    <div class="metric">
+      <div class="what">Выручка за ночные часы (00:00–03:00)</div>
+      <div class="was">было ~7 000 ₸/мес</div><div class="arrow">→</div>
+      <div class="now">202 738 ₸</div><div class="plus">+195 600 ₸</div>
+    </div>
+    <div class="metric">
+      <div class="what">Прибыль за ночные часы</div>
+      <div class="was">было ~4 200 ₸/мес</div><div class="arrow">→</div>
+      <div class="now">117 898 ₸</div><div class="plus">+113 700 ₸</div>
+    </div>
+    <div class="bigline">Ночные часы принесли <b>+113 700 ₸ чистой прибыли</b> за август<br>
+      <span style="font-size:0.87rem;color:var(--text-secondary)">Это уже за вычетом всего: газа и воды на кабину, доли мастера за пилинг и себестоимости съеденного и выпитого. Маржинальность ночных часов — <b style="font-size:1rem">58%</b>, то есть ровно как у обычных часов: ночные гости не хуже дневных. Остаётся вычесть только зарплату ночной смены.</span></div>
+    <p class="plain"><b>Считаем на пальцах.</b> Баня работала допоздна 20 ночей. Значит одна такая ночь приносит в среднем:<br>
+      • <b>10 137 ₸ выручки</b> (202 738 ₸ ÷ 20 ночей)<br>
+      • <b>5 895 ₸ прибыли</b> — после газа, воды, света, доли мастера и себестоимости еды с напитками<br>
+      Теперь главный вопрос: <b>сколько вы платите смене за эти 3 часа?</b> Если меньше 5 900 ₸ за ночь — вы в плюсе, ночные часы окупаются и их стоит рекламировать. Если больше — либо поднимите цену за ночное время, либо закрывайтесь раньше.</p>
+    <p class="plain" style="color:var(--text-muted);font-size:0.84rem">Как считалось: если гость парился с 23:30 до 00:30 и заплатил 10 000 ₸, то половина его времени попала в ночь — значит в ночные часы засчитано 5 000 ₸ выручки и половина его прибыли. Так же пропорционально разделены еда, напитки и пилинг. Учтены все гости, а не только те, кто пришёл после полуночи.</p>
+  </div>
+
+  <div class="card" id="table">
+    <h2>Все показатели по месяцам</h2>
+    <p class="note">Февраль и август — неполные месяцы (данные с 26 фев и по 28 авг). Зелёным выделен август — лучший месяц по прибыли. Здесь показаны все дни, включая выходные и день акции 25 августа. Наведите курсор на заголовок столбца, чтобы понять, что он означает.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th data-tip="Месяц. Февраль и август неполные: данные начинаются 26 февраля и обрываются 28 августа.">Месяц</th>
+          <th class="num" data-tip="Сколько дней этого месяца попало в отчёты. На это число делится прибыль, чтобы получить показатель за день.">Дней</th>
+          <th class="num" data-tip="Число оплаченных визитов — это компании гостей, а не отдельные люди.">Визитов</th>
+          <th class="num" data-tip="Деньги, фактически полученные от гостей. Где по сертификату дана скидка — взята сумма после скидки.">Выручка</th>
+          <th class="num" data-tip="Что осталось вам: выручка минус 1650 ₸ за каждый час работы кабины, минус доля мастера по пилингу, минус 50% себестоимости еды и напитков.">Прибыль</th>
+          <th class="num" data-tip="Какая доля выручки осталась вам прибылью. Чем выше, тем выгоднее структура продаж в этом месяце.">Маржа</th>
+          <th class="num" data-tip="Средний чек: выручка, делённая на число визитов. Сколько тратит одна компания гостей.">Ср. чек</th>
+          <th class="num" data-tip="Прибыль, делённая на число рабочих дней. Сколько бизнес зарабатывает в обычный день этого месяца.">Приб./день</th>
+          <th class="num" data-tip="Сколько часов кабины были заняты за месяц, включая подаренные по акциям. За все эти часы платится газ, вода и свет.">Часов кабин</th>
+          <th class="num" data-tip="Доля визитов, где гости взяли пилинг — самую доходную допуслугу.">Пилинг</th>
+        </tr></thead>
+        <tbody id="month-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" id="profit">
+    <h2>Выручка и прибыль по месяцам</h2>
+    <p class="note">Разрыв между столбцами — это себестоимость: газ, вода и электричество на кабины, доля мастера по пилингу и закупка еды с напитками.</p>
+    <svg id="ch-profit" width="100%" height="250" viewBox="0 0 1000 250" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--s1)"></i>Выручка</span>
+      <span><i class="swatch" style="background:var(--good)"></i>Прибыль (что осталось вам)</span>
+    </div>
+  </div>
+
+  <div class="card" id="wd">
+    <h2>Будни vs выходные: выручка за один день</h2>
+    <p class="note">Сколько в среднем приносил ОДИН день каждого типа. Скидка на будни введена с августа — видно, как августовский будний день подтянулся к выходному, хотя раньше отставал вдвое. Февраль не показан: всего 3 дня данных.</p>
+    <div id="wd-bars"></div>
+    <div class="legend" style="margin-top:14px">
+      <span><i class="swatch" style="background:var(--s1)"></i>Будни (Пн–Пт)</span>
+      <span><i class="swatch" style="background:var(--s4)"></i>Выходные (Сб–Вс)</span>
+    </div>
+  </div>
+
+  <div class="card" id="aov">
+    <h2>Средний чек по месяцам</h2>
+    <p class="note">Август дал рекорд по числу визитов и по прибыли, но средний чек при этом самый низкий — 13 753 ₸ против 15 000–15 400 ₸ в мае–июле. Это нормальное следствие скидки: гостей стало вдвое больше, но каждый платит меньше. Следующий рычаг роста — поднимать чек (пилинг, еда), а не только поток.</p>
+    <svg id="ch-aov" width="100%" height="195" viewBox="0 0 1000 195" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+
+  <footer>
+    <b>Как считалось:</b> кабина — минус 1650 ₸ за каждый час занятости (газ, септик, вода, электричество), включая часы, подаренные по акциям: ресурсы на них тратятся так же. Пилинг — ваша доля равна min(цена сеанса, 2000 ₸), остальное уходит мастеру. Простыня, полотенце, шапка — 100% ваши (инвентарь куплен один раз, это аренда). Еда, напитки и расходники — маржа 50%. Выручка считается по фактически полученным деньгам: где по сертификату дана скидка, взята сумма после скидки.<br>
+    <b>Уточнение по датам:</b> отчёты, сфотографированные до 10:00 утра, отнесены к предыдущему рабочему дню — это подтверждается их собственными пометками («итог дня 20.08», «лист от 27 августа», «итого за 25.08»). Правка затронула 12 фотографий из 266.<br>
+    Из выручки исключены итоговые страницы отчётов, дублирующие уже посчитанные визиты того же дня. Около 32% строк помечены как «неточные» при расшифровке почерка — общая картина устойчива, но для бухгалтерии сверяйте с фото.<br>
+    Оценка «в месяц» = показатель за один будний день × 21.7 (среднее число будних дней в месяце).
+  </footer>
+</div>
+</div>
+
+<script>
+const M = {
+ "2026-02":{days:3,visits:9,revenue:108650,margin:51875,margin_pct:47.7,aov:12072,ppd:17292,cab_hours:13.0,attach:33.3,wd_rpd:44375,we_rpd:19900},
+ "2026-03":{days:22,visits:63,revenue:962450,margin:512700,margin_pct:53.3,aov:15277,ppd:23305,cab_hours:115.5,attach:39.7,wd_rpd:32096,we_rpd:64138},
+ "2026-04":{days:29,visits:108,revenue:1506536,margin:815936,margin_pct:54.2,aov:13949,ppd:28136,cab_hours:190.0,attach:24.1,wd_rpd:35535,we_rpd:95036},
+ "2026-05":{days:26,visits:104,revenue:1567250,margin:927700,margin_pct:59.2,aov:15070,ppd:35681,cab_hours:193.5,attach:26.0,wd_rpd:54631,we_rpd:72988},
+ "2026-06":{days:24,visits:66,revenue:988050,margin:468575,margin_pct:47.4,aov:14970,ppd:19524,cab_hours:109.5,attach:9.1,wd_rpd:34068,we_rpd:58414},
+ "2026-07":{days:24,visits:54,revenue:832800,margin:487900,margin_pct:58.6,aov:15422,ppd:20329,cab_hours:97.0,attach:40.7,wd_rpd:21453,we_rpd:66871},
+ "2026-08":{days:28,visits:140,revenue:1925450,margin:1080425,margin_pct:56.1,aov:13753,ppd:38587,cab_hours:262.0,attach:38.6,wd_rpd:61582,we_rpd:86725}
+};
+const LBL={"2026-02":"Фев","2026-03":"Мар","2026-04":"Апр","2026-05":"Май","2026-06":"Июн","2026-07":"Июл","2026-08":"Авг"};
+const FULL={"2026-02":"Февраль","2026-03":"Март","2026-04":"Апрель","2026-05":"Май","2026-06":"Июнь","2026-07":"Июль","2026-08":"Август"};
+const n = v => v.toLocaleString('ru');
+const css = k => getComputedStyle(document.querySelector('.viz-root')).getPropertyValue(k).trim();
+
+document.getElementById('month-table').innerHTML = Object.keys(M).map(k=>{
+  const m=M[k], best=k==='2026-08';
+  return `<tr class="${best?'best':''}">
+    <td>${FULL[k]}${(k==='2026-02'||k==='2026-08')?' *':''}</td>
+    <td class="num">${m.days}</td><td class="num">${m.visits}</td>
+    <td class="num">${n(m.revenue)}</td><td class="num">${n(m.margin)}</td>
+    <td class="num">${m.margin_pct}%</td><td class="num">${n(m.aov)}</td>
+    <td class="num">${n(m.ppd)}</td><td class="num">${m.cab_hours}</td>
+    <td class="num">${m.attach}%</td></tr>`;
+}).join('') + `<tr><td colspan="10" style="border:none;padding-top:10px;color:var(--text-muted);font-size:0.76rem">* неполный месяц — данные с 26 февраля и по 28 августа</td></tr>`;
+
+function grouped(id,A,B,cA,cB){
+  const svg=document.getElementById(id), ks=Object.keys(A);
+  const W=1000,H=250,pL=72,pR=16,pT=18,pB=34, w=W-pL-pR, h=H-pT-pB;
+  const mx=Math.max(...ks.map(k=>A[k])), bw=w/ks.length*0.34;
+  let s='';
+  for(let i=0;i<=4;i++){const y=pT+h-h*i/4;
+    s+=`<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="${css('--grid')}" stroke-width="1"/>`;
+    s+=`<text x="${pL-8}" y="${y+4}" text-anchor="end">${Math.round(mx*i/4/1000)}k</text>`;}
+  ks.forEach((k,i)=>{const cx=pL+w*(i+.5)/ks.length, ha=A[k]/mx*h, hb=B[k]/mx*h;
+    s+=`<rect x="${cx-bw-2}" y="${pT+h-ha}" width="${bw}" height="${ha}" rx="3" fill="${cA}"><title>${FULL[k]}: выручка ${n(A[k])} ₸</title></rect>`;
+    s+=`<rect x="${cx+2}" y="${pT+h-hb}" width="${bw}" height="${hb}" rx="3" fill="${cB}"><title>${FULL[k]}: прибыль ${n(B[k])} ₸</title></rect>`;
+    s+=`<text x="${cx}" y="${H-10}" text-anchor="middle">${LBL[k]}</text>`;});
+  s+=`<line x1="${pL}" y1="${pT+h}" x2="${W-pR}" y2="${pT+h}" stroke="${css('--axis')}" stroke-width="1.5"/>`;
+  svg.innerHTML=s;
+}
+const rev={},mar={};Object.keys(M).forEach(k=>{rev[k]=M[k].revenue;mar[k]=M[k].margin;});
+grouped('ch-profit',rev,mar,css('--s1'),css('--good'));
+
+function line(id,S,c){
+  const svg=document.getElementById(id), ks=Object.keys(S);
+  const W=1000,H=195,pL=60,pR=16,pT=26,pB=28, w=W-pL-pR, h=H-pT-pB;
+  const vs=Object.values(S), mn=Math.min(...vs)*0.92, mx=Math.max(...vs)*1.06;
+  let s='';
+  for(let i=0;i<=3;i++){const y=pT+h-h*i/3, v=mn+(mx-mn)*i/3;
+    s+=`<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="${css('--grid')}" stroke-width="1"/>`;
+    s+=`<text x="${pL-8}" y="${y+4}" text-anchor="end">${(v/1000).toFixed(1)}k</text>`;}
+  const p=ks.map((k,i)=>[pL+w*(i+.5)/ks.length, pT+h-((S[k]-mn)/(mx-mn))*h, k]);
+  s+=`<polyline points="${p.map(x=>x[0]+','+x[1]).join(' ')}" fill="none" stroke="${c}" stroke-width="2.5"/>`;
+  p.forEach(([x,y,k])=>{
+    s+=`<circle cx="${x}" cy="${y}" r="4.5" fill="${c}"><title>${FULL[k]}: ${n(S[k])} ₸</title></circle>`;
+    s+=`<text x="${x}" y="${H-8}" text-anchor="middle">${LBL[k]}</text>`;
+    s+=`<text x="${x}" y="${y-11}" text-anchor="middle" font-weight="600">${(S[k]/1000).toFixed(1)}k</text>`;});
+  s+=`<line x1="${pL}" y1="${pT+h}" x2="${W-pR}" y2="${pT+h}" stroke="${css('--axis')}" stroke-width="1.5"/>`;
+  svg.innerHTML=s;
+}
+const aov={};Object.keys(M).forEach(k=>{aov[k]=M[k].aov;});
+line('ch-aov',aov,css('--s5'));
+
+const ks=Object.keys(M).filter(k=>k!=='2026-02');
+const mxv=Math.max(...ks.flatMap(k=>[M[k].wd_rpd,M[k].we_rpd]));
+document.getElementById('wd-bars').innerHTML = ks.map(k=>`
+  <div class="bar-row"><div class="bar-label">${FULL[k]}</div>
+    <div class="bar-track" style="display:flex;flex-direction:column;gap:2px;height:auto;background:none">
+      <div style="height:15px;background:var(--grid);border-radius:4px;overflow:hidden">
+        <div style="width:${(M[k].wd_rpd/mxv*100).toFixed(1)}%;height:100%;background:${k==='2026-08'?css('--good'):css('--s1')};border-radius:4px"></div></div>
+      <div style="height:15px;background:var(--grid);border-radius:4px;overflow:hidden">
+        <div style="width:${(M[k].we_rpd/mxv*100).toFixed(1)}%;height:100%;background:${css('--s4')};border-radius:4px"></div></div>
+    </div>
+    <div class="bar-val">${n(M[k].wd_rpd)}<br><span style="color:var(--s4)">${n(M[k].we_rpd)}</span></div>
+  </div>`).join('');
+</script>
+
+</body>
+</html>

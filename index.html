@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<title>Саят — общая статистика</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧖</text></svg>">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;padding:0}
+  img,svg{max-width:100%}
+</style>
+</head>
+<body>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s7:#4a3aa7;
+    --good:#0ca30c; --warn:#fab219; --tip-bg:#0b0b0b; --tip-fg:#ffffff;
+    font-family: system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--page); color:var(--text-primary);
+  }
+  @media (prefers-color-scheme: dark){ :root:where(:not([data-theme="light"])) .viz-root{
+    color-scheme:dark; --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s7:#9085e9;
+    --tip-bg:#f4f4f2; --tip-fg:#0b0b0b; } }
+  :root[data-theme="dark"] .viz-root{
+    color-scheme:dark; --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s7:#9085e9;
+    --tip-bg:#f4f4f2; --tip-fg:#0b0b0b; }
+  *{box-sizing:border-box} body{margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 80px}
+  h1{font-size:1.55rem;margin:0 0 4px}
+  .sub{color:var(--text-secondary);margin:0 0 22px;font-size:0.95rem;line-height:1.5}
+  .card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:20px}
+  .card h2{font-size:1.05rem;margin:0 0 6px}
+  .card .note{color:var(--text-muted);font-size:0.82rem;margin:0 0 16px;line-height:1.55}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px}
+  .kpi{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:help}
+  .kpi.hero{border:2px solid var(--good);background:color-mix(in srgb,var(--good) 6%,var(--surface-1))}
+  .kpi .val{font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums}
+  .kpi.hero .val{color:var(--good);font-size:1.5rem}
+  .kpi .lbl{color:var(--text-secondary);font-size:0.76rem;margin-top:3px;display:flex;align-items:center;gap:5px}
+  .kpi .lbl::after{content:"?";display:inline-flex;align-items:center;justify-content:center;
+    width:13px;height:13px;border-radius:50%;border:1px solid var(--text-muted);
+    color:var(--text-muted);font-size:9px;font-weight:700;flex-shrink:0}
+  [data-tip]{position:relative}
+  [data-tip]:hover::after,[data-tip]:focus-visible::after{
+    content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:0;
+    min-width:210px;max-width:300px;background:var(--tip-bg);color:var(--tip-fg);
+    padding:9px 11px;border-radius:8px;font-size:0.76rem;font-weight:400;line-height:1.45;
+    z-index:50;white-space:normal;box-shadow:0 4px 16px rgba(0,0,0,0.22);pointer-events:none}
+  table{width:100%;border-collapse:collapse;font-size:0.85rem}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--grid)}
+  th{color:var(--text-muted);font-weight:500;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.03em;cursor:help}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  svg text{fill:var(--text-secondary);font-size:11px}
+  .bar-row{display:flex;align-items:center;gap:10px;margin:6px 0}
+  .bar-label{width:150px;font-size:0.82rem;color:var(--text-secondary);flex-shrink:0}
+  .bar-track{flex:1;background:var(--grid);border-radius:4px;height:19px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:4px}
+  .bar-val{font-size:0.78rem;color:var(--text-secondary);width:112px;text-align:right;font-variant-numeric:tabular-nums;flex-shrink:0}
+  .nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+  .nav a{font-size:0.82rem;text-decoration:none;color:var(--text-secondary);border:1px solid var(--border);
+    background:var(--surface-1);padding:6px 12px;border-radius:20px}
+  .nav a:hover{border-color:var(--good);color:var(--good)}
+  .act{list-style:none;margin:0;padding:0;counter-reset:a}
+  .act li{counter-increment:a;margin-bottom:13px;padding:13px 15px 13px 46px;position:relative;
+    background:var(--page);border:1px solid var(--border);border-radius:10px;line-height:1.55;font-size:0.9rem}
+  .act li::before{content:counter(a);position:absolute;left:13px;top:13px;width:23px;height:23px;border-radius:50%;
+    background:var(--good);color:#fff;font-size:0.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .imp{color:var(--good);font-weight:700}
+  footer{color:var(--text-muted);font-size:0.78rem;margin-top:30px;line-height:1.65}
+
+  /* --- Неочевидные находки --- */
+  .ideas{border:2px solid var(--s4)}
+  .idea{padding:15px 0;border-top:1px solid var(--border)}
+  .idea:first-of-type{border-top:none;padding-top:6px}
+  .idea-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:9px;font-size:1rem;line-height:1.4}
+  .idea-h .rank{flex-shrink:0;width:25px;height:25px;border-radius:50%;background:var(--s4);color:#3a2600;
+    font-size:0.82rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .idea-h b{flex:1 1 220px}
+  .idea-h .tag{flex-shrink:0;background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good);
+    font-size:0.78rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+  .idea p{margin:0 0 9px;font-size:0.9rem;line-height:1.65;color:var(--text-secondary)}
+  .idea p:last-child{margin-bottom:0}
+  .idea p b{color:var(--text-primary)}
+  .idea table{font-size:0.84rem}
+  .idea-total{margin-top:16px;padding:14px 16px;background:var(--page);border:1px solid var(--border);
+    border-radius:10px;font-size:0.94rem;line-height:1.6}
+  .idea-total b{color:var(--good);font-size:1.08rem}
+
+  /* --- Мобильная версия --- */
+  @media (max-width:640px){
+    .wrap{padding:20px 14px 60px}
+    h1{font-size:1.25rem}
+    .sub{font-size:0.87rem}
+    .card{padding:16px 14px;border-radius:10px}
+    .card h2{font-size:0.98rem}
+    .kpi-grid{grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:9px}
+    .kpi{padding:11px 12px}
+    .kpi .val{font-size:1.15rem}
+    .kpi.hero .val{font-size:1.25rem}
+    .kpi .lbl{font-size:0.71rem}
+    .bar-label{width:104px;font-size:0.76rem}
+    .bar-val{width:88px;font-size:0.72rem}
+    th,td{padding:6px 7px;font-size:0.78rem}
+    th{font-size:0.66rem}
+    .idea-h{font-size:0.93rem;gap:7px}
+    .idea-h .tag{font-size:0.72rem;padding:2px 8px}
+    .idea p{font-size:0.86rem}
+    .idea-total{font-size:0.88rem;padding:12px 13px}
+    .nav{gap:7px;margin-bottom:16px}
+    .nav a{font-size:0.76rem;padding:5px 10px}
+    footer{font-size:0.73rem}
+    /* на телефоне тултипы прижимаем к экрану, чтобы не обрезались */
+    [data-tip]:hover::after,[data-tip]:focus-visible::after{
+      position:fixed;left:12px;right:12px;bottom:14px;top:auto;min-width:0;max-width:none;
+      font-size:0.82rem;box-shadow:0 -2px 24px rgba(0,0,0,0.3)}
+  }
+  @media (hover:none){
+    /* на тач-устройствах подсказка открывается по нажатию */
+    .kpi:active::after,th:active::after,[data-tip]:active::after{opacity:1}
+  }
+</style>
+<div class="viz-root">
+<div class="wrap">
+  <h1>Баня «Саят» — общая статистика за период</h1>
+  <p class="sub">266 рукописных отчётов, 26 фев — 28 авг 2026 (156 рабочих дней из 184 календарных). Все суммы в тенге. Наведите курсор на любой показатель — появится пояснение, что он означает и как посчитан.</p>
+
+  <div class="nav">
+    <a href="#main">Главные цифры</a>
+    <a href="#items">Что приносит деньги</a>
+    <a href="#cabins">Кабины</a>
+    <a href="#time">Время и оплата</a>
+    <a href="#todo">Что делать дальше</a>
+    <a href="months.html" style="border-color:var(--good);color:var(--good)">→ Отчёт по месяцам</a>
+  </div>
+
+  <div id="main">
+  <div class="kpi-grid">
+    <div class="kpi hero" data-tip="Сколько денег реально осталось у вас за 6 месяцев после всех расходов: газа, воды и электричества на кабины, доли мастера по пилингу, закупки еды с напитками и скидок по сертификатам."><div class="val">4 345 111 ₸</div><div class="lbl">Прибыль за период</div></div>
+    <div class="kpi" data-tip="Деньги, фактически полученные от гостей за 6 месяцев. Где по сертификату дана скидка — взята сумма после скидки. Итоговые страницы отчётов, дублировавшие визиты, исключены."><div class="val">7 891 186 ₸</div><div class="lbl">Выручка</div></div>
+    <div class="kpi" data-tip="Какая доля выручки осталась вам прибылью: 4 345 111 из 7 891 186. Каждые 100 ₸ от гостя дают вам 55 ₸ прибыли."><div class="val">55.1%</div><div class="lbl">Маржинальность</div></div>
+    <div class="kpi" data-tip="Прибыль, делённая на 156 рабочих дней. Столько бизнес зарабатывает в обычный день."><div class="val">27 853 ₸</div><div class="lbl">Прибыль в день</div></div>
+    <div class="kpi" data-tip="Число оплаченных визитов — это компании гостей, а не отдельные люди. Одна компания = один визит. Ещё 10 компаний пришли 25 августа по акции и не заплатили ничего — они сюда не входят."><div class="val">544</div><div class="lbl">Визитов</div></div>
+    <div class="kpi" data-tip="Средний чек: выручка, делённая на число визитов. Сколько в среднем оставляет одна компания гостей за посещение."><div class="val">14 506 ₸</div><div class="lbl">Средний чек</div></div>
+    <div class="kpi" data-tip="Сколько всего часов кабины были заняты за 6 месяцев, включая 24.5 часа, подаренных по акциям. За все эти часы вы платите газ, септик, воду и электричество по 1650 ₸/час."><div class="val">980 ч</div><div class="lbl">Часов работы кабин</div></div>
+    <div class="kpi" data-tip="Средняя длительность одного сеанса. Типичный визит — компания из 2–3 человек примерно на 1.5–2 часа."><div class="val">1.74 ч</div><div class="lbl">Длительность сеанса</div></div>
+  </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h2>Куда уходит выручка</h2>
+    <p class="note">Из каждых 100 ₸, полученных от гостей, у вас остаётся 57 ₸. Остальное — реальные расходы на обслуживание визита (не считая зарплат администраторов, аренды и налогов — их в отчётах нет).</p>
+    <div id="waterfall"></div>
+  </div>
+
+  <div class="card" id="items">
+    <h2>Что приносит деньги</h2>
+    <p class="note">Отсортировано по вашей прибыли, а не по выручке — это разные вещи. Кабина даёт 3.69 млн выручки, но после вычета газа/воды/электричества остаётся 2.11 млн. Пилинг даёт 749 тыс. выручки, но 194 тыс. из них уходит мастеру.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th data-tip="Товар или услуга. Похожие написания объединены, если совпадала цена: «пиво» и «пиво прага» — одно и то же, «сазан», «садан», «торман» — тоже.">Позиция</th>
+          <th class="num" data-tip="Сколько заплатили гости за эту позицию за все 6 месяцев.">Выручка</th>
+          <th class="num" data-tip="Сколько из этой выручки реально осталось вам после себестоимости.">Ваша прибыль</th>
+          <th class="num" data-tip="Какая доля выручки по этой позиции остаётся вам. 100% — значит расходов нет вообще.">Маржа</th>
+        </tr></thead>
+        <tbody id="items-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" id="cabins">
+    <h2>Загрузка кабин</h2>
+    <p class="note">Кабины 2, 3 и 4 несут почти всю нагрузку. Кабина 1 — VIP по 7000 ₸/час, используется редко (13 визитов), но приносит больше всех за час. Кабины 5 и 6 почти простаивают — стоит понять почему: расположение, состояние, или их просто не предлагают гостям.</p>
+    <div id="cabin-bars"></div>
+  </div>
+
+  <div class="card" id="time">
+    <h2>Когда приходят гости</h2>
+    <p class="note">Пик заездов — с 19:00 до 23:00, максимум в 21:00. Дневные часы (12:00–17:00) почти пустуют: это готовый резерв, который можно заполнить дневным предложением, как уже сработала скидка на будни.</p>
+    <svg id="ch-hour" width="100%" height="200" viewBox="0 0 1000 200" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+
+  <div class="card">
+    <h2>Способы оплаты</h2>
+    <p class="note">Указаны не во всех отчётах, поэтому суммы охватывают лишь часть выручки. Kaspi уверенно доминирует — при планировании учитывайте комиссию и сроки зачисления.</p>
+    <div id="pay-bars"></div>
+  </div>
+
+  <div class="card">
+    <h2>Клиенты и допродажи</h2>
+    <div class="kpi-grid" style="margin-bottom:15px">
+      <div class="kpi" data-tip="Сколько разных телефонных номеров встретилось в отчётах за 6 месяцев. Это ваша клиентская база — уже готовый список тех, кто платил."><div class="val">384</div><div class="lbl">Уникальных клиентов</div></div>
+      <div class="kpi" data-tip="Сколько клиентов приходили 2 раза и больше. Остальные 338 человек были у вас ровно один раз и не вернулись."><div class="val">46</div><div class="lbl">Вернулись повторно</div></div>
+      <div class="kpi" data-tip="Доля визитов, где гости взяли пилинг — самую доходную допуслугу. Каждый третий берёт; значит два из трёх уходят без него."><div class="val">30.0%</div><div class="lbl">Визитов с пилингом</div></div>
+      <div class="kpi" data-tip="Доля визитов, где гости взяли хоть что-то сверх кабины: еду, напитки, полотенца. База хорошая — люди готовы докупать."><div class="val">86.2%</div><div class="lbl">Визитов с допродажей</div></div>
+    </div>
+    <p class="note" style="margin:0">Из 384 человек, которые хоть раз заплатили, повторно пришли только 46 — это <b>12%</b>. Остальные 338 человек уже знают дорогу, уже платили и не потребуют затрат на привлечение заново. При среднем чеке ~14 500 ₸ это самый дешёвый источник роста из доступных.</p>
+  </div>
+
+  <div class="card ideas" id="ideas">
+    <h2>💡 Неочевидные находки в ваших цифрах</h2>
+    <p class="note">Это то, что не видно в обычном отчёте — закономерности, которые вылезли только при разборе 544 визитов. Каждая подкреплена конкретными числами из ваших же отчётов. Суммы — оценка при текущем потоке гостей, без единого нового клиента.</p>
+
+    <div class="idea">
+      <div class="idea-h"><span class="rank">1</span><b>Вы продаёте часы. А деньги — в еде.</b><span class="tag">+125 000 ₸/мес</span></div>
+      <p><b>Что в данных:</b> еду заказывают только <b>24%</b> гостей. Но их чек — <b>27 737 ₸</b> против <b>10 351 ₸</b> у тех, кто без еды. Это <b>в 2.7 раза</b> больше, а не на 20–30%.</p>
+      <p><b>Почему так:</b> человек, который поел, сидит дольше, берёт больше напитков и чаще возвращается. Еда — не «допродажа», а то, что превращает помывку в вечер.</p>
+      <p><b>Что сделать:</b> перестать спрашивать «желаете что-нибудь?». Меню должно попадать в руки вместе с полотенцами, а при брони по телефону — вопрос «на какое время готовить куырдак?» вместо «будете заказывать?». Довести долю с 24% до 40% — это <b>+125 000 ₸ прибыли в месяц</b>.</p>
+    </div>
+
+    <div class="idea">
+      <div class="idea-h"><span class="rank">2</span><b>VIP-кабина — ваш самый доходный актив, и он простаивает.</b><span class="tag">+129 000 ₸/мес</span></div>
+      <p><b>Что в данных:</b> кабина №1 приносит <b>15 179 ₸ в час</b> — почти вдвое больше кабины №2 (8 201 ₸/час). Но за полгода она проработала всего <b>42 часа</b> из 825 общих. Это 5% времени на самом прибыльном месте.</p>
+      <p><b>Почему так:</b> скорее всего её просто не предлагают — администратору проще посадить в свободную обычную кабину, чем продавать дорогую.</p>
+      <p><b>Что сделать:</b> сделать её предложением по умолчанию для компаний от 4 человек (они и так тратят 26 636 ₸ за визит — больше всех). Довести загрузку с 42 до 100 часов за полгода — <b>+129 000 ₸ прибыли в месяц</b>. <span style="color:var(--text-muted)">Оговорка: 42 часа — небольшая выборка, ставку 15 179 ₸/час стоит перепроверить на большем объёме.</span></p>
+    </div>
+
+    <div class="idea">
+      <div class="idea-h"><span class="rank">3</span><b>Три часа выгоднее трёх часовых броней.</b><span class="tag">+27 000 ₸/мес</span></div>
+      <p><b>Что в данных:</b> час бани приносит тем больше, чем дольше сидит гость:</p>
+      <table style="margin:8px 0 10px"><thead><tr><th>Длительность</th><th class="num">Чек</th><th class="num">Выручка в час</th></tr></thead><tbody>
+        <tr><td>1 час</td><td class="num">5 895 ₸</td><td class="num">5 895 ₸</td></tr>
+        <tr><td>2 часа</td><td class="num">13 653 ₸</td><td class="num">6 826 ₸</td></tr>
+        <tr><td>3 часа</td><td class="num">29 404 ₸</td><td class="num"><b>9 801 ₸</b></td></tr>
+      </tbody></table>
+      <p>Трёхчасовой гость приносит в час на <b>66% больше</b>, чем часовой — потому что успевает поесть и выпить. Одна бронь на 3 часа выгоднее трёх броней по часу, хотя занимает столько же времени.</p>
+      <p><b>Что сделать:</b> продавать не «час за 3000», а готовый вечер: «3 часа + куырдак + пилинг на компанию» одной ценой. Перевести хотя бы четверть часовых броней в двухчасовые — <b>+27 000 ₸ прибыли в месяц</b>.</p>
+    </div>
+
+    <div class="idea">
+      <div class="idea-h"><span class="rank">4</span><b>Пилинг — это не про спрос, а про то, кто сегодня в смене.</b><span class="tag">+19 000 ₸/мес</span></div>
+      <p><b>Что в данных:</b> доля визитов с пилингом скачет по месяцам без всякой логики: март <b>39.7%</b>, апрель 23.1%, июнь <b>9.1%</b>, июль <b>40.7%</b>, август 38.6%. Гости те же, цена та же, сезон тот же.</p>
+      <p><b>Почему так:</b> если в июне получилось 9%, а в июле 41% — дело не в гостях. Кто-то умеет предлагать пилинг, а кто-то нет. И это никак не зафиксировано.</p>
+      <p><b>Что сделать:</b> выяснить, что именно говорил администратор в июле, записать это дословно как скрипт и требовать от всех. Июльские 40.7% — не мечта, а ваш собственный уже достигнутый результат. Возврат к этому уровню — <b>+19 000 ₸ прибыли в месяц</b>. Заодно: чек с пилингом <b>21 780 ₸</b> против 11 421 ₸ без него — почти вдвое.</p>
+    </div>
+
+    <div class="idea">
+      <div class="idea-h"><span class="rank">5</span><b>С 11 до 17 баня почти пустая — а платит за это уже сейчас.</b><span class="tag">+81 000 ₸/мес</span></div>
+      <p><b>Что в данных:</b> только <b>14%</b> заездов (70 из 494) приходятся на 11:00–17:00. Это 6 часов в сутки × 30 дней = <b>180 часов в месяц</b> практически пустого времени.</p>
+      <p><b>Почему это важно:</b> вы уже доказали на буднях, что цена двигает спрос — снизили на 25%, загрузка выросла вдвое. Тот же рычаг не применён к дневным часам.</p>
+      <p><b>Что сделать:</b> дневной тариф с понятным названием («Дневная баня до 17:00») и отдельным ценником. Заполнить всего 2 часа в день — <b>+81 000 ₸ прибыли в месяц</b>. Целевая аудитория есть: пенсионеры, мамы в декрете, сменные рабочие, командировочные.</p>
+    </div>
+
+    <div class="idea">
+      <div class="idea-h"><span class="rank">6</span><b>Вы раздаёте сертификаты и не знаете, работают ли они.</b><span class="tag">измерить</span></div>
+      <p><b>Что в данных:</b> сертификаты упоминаются в <b>85 визитах (15.6%)</b>, за один только день акции выдано 40 штук. Но в отчётах не видно, какой сертификат сработал, а какой нет — только факт скидки.</p>
+      <p><b>Что сделать:</b> поставить на каждый сертификат номер и записывать его при погашении. Через месяц вы точно узнаете, сколько стоит привести клиента и какой канал реально работает. Сейчас вы платите за привлечение вслепую: за акцию 25 августа отдали ≈4 400 ₸ прибыли и 24 контакта, а вернулся <b>1 человек</b>.</p>
+    </div>
+
+    <div class="idea-total">Если сделать первые пять пунктов — это порядка <b>+380 000 ₸ прибыли в месяц</b> при том же числе гостей и без вложений в рекламу. Для сравнения: сейчас вы зарабатываете около <b>712 000 ₸</b> прибыли в месяц.</div>
+  </div>
+
+  <div class="card" id="todo">
+    <h2>Что делать дальше — по влиянию на прибыль</h2>
+    <p class="note">Сначала то, что не требует новых клиентов и даёт измеримый результат уже в этом месяце.</p>
+    <ol class="act">
+      <li><b>Повторите скидочный приём на дневные часы.</b> Снижение будничной цены до 3000 ₸ дало <span class="imp">≈ +207 000 ₸ прибыли в месяц</span> — приём доказанно работает: гостей стало вдвое больше, и объём перекрыл скидку. Дневные слоты 12:00–17:00 сейчас почти пустые, там та же логика может сработать снова.</li>
+      <li><b>Обзвоните 24 контакта с акции 25 августа.</b> Акция «первый час бесплатно» привела 25 компаний, но прибыль в тот день оказалась <b>ниже</b> обычного дня — вы фактически заплатили за привлечение. Эти деньги окупятся только повторными визитами: пока вернулся 1 человек из 24. Это самое срочное действие в списке.</li>
+      <li><b>Верните разовых клиентов.</b> 338 человек были один раз и не вернулись. Сообщение через 5–7 дней после визита с поводом вернуться — при возврате всего 10% из них это <span class="imp">≈ +45 000 ₸ прибыли в месяц</span> без затрат на рекламу.</li>
+      <li><b>Поднимите долю пилинга с 30% до 50%.</b> Администратор должен предлагать пилинг при каждой брони, а не ждать вопроса. Без единого нового гостя это <span class="imp">≈ +63 000 ₸ прибыли в месяц</span>.</li>
+      <li><b>Посчитайте окупаемость ночных часов.</b> Работа до 3:00 (с 5 августа) добавила <span class="imp">≈195 600 ₸ выручки</span> за месяц: 28 гостей за 20 ночей. Одна поздняя ночь приносит около 10 100 ₸ выручки или 7 800 ₸ после газа, воды и света. Сравните с зарплатой смены за эти 3 часа: обходится дешевле — держите и рекламируйте, дороже — введите наценку за поздний заезд.</li>
+      <li><b>Не повторяйте акцию в формате «просто бесплатный час».</b> 10 компаний из 25 не купили вообще ничего, а 19 подаренных часов стоили вам 31 350 ₸ газа, воды и электричества. Если повторять — привяжите бесплатный час к условию: только по будням днём, или при заказе от определённой суммы, или только для тех, кто оставил контакт и согласился на рассылку.</li>
+      <li><b>Наведите порядок в отчётах.</b> Пишите либо итог дня, либо суммы по каждому гостю — но не оба сразу, иначе день считается дважды. Указывайте на листе дату смены (а не только фотографируйте утром) и фиксируйте способ оплаты у каждого визита.</li>
+    </ol>
+  </div>
+
+  <footer>
+    <b>Как считалось:</b> кабина — минус 1650 ₸ за каждый час занятости (газ, септик, вода, электричество), включая часы, подаренные по акциям: ресурсы на них тратятся так же. Пилинг — ваша доля равна min(цена сеанса, 2000 ₸), остальное уходит мастеру. Простыня, полотенце, шапка — 100% ваши (инвентарь куплен один раз, гости платят за аренду). Еда, напитки и расходники — маржа 50%.<br>
+    Выручка считается по фактически полученным деньгам: где по сертификату дана скидка, взята сумма после скидки (всего скидок на 236 364 ₸).<br>
+    <b>Уточнение по датам:</b> отчёты, сфотографированные до 10:00 утра, отнесены к предыдущему рабочему дню — это подтверждается их собственными пометками («итог дня 20.08», «лист от 27 августа», «итого за 25.08»). Правка затронула 12 фотографий из 266.<br>
+    В расчёте прибыли не учтены зарплаты администраторов, аренда помещения, налоги и реклама — этих данных в отчётах нет. Поэтому 4.35 млн — это валовая прибыль до постоянных расходов, а не чистая прибыль бизнеса.<br>
+    Около 32% строк помечены как «неточные» при расшифровке почерка — общая картина устойчива, но для бухгалтерии сверяйте с фотографиями. Фото-отчёты лежат в папке <code>otchet_photos</code> внутри экспорта Telegram; ни одно фото не изменено и не опубликовано.
+  </footer>
+</div>
+</div>
+
+<script>
+const n = v => v.toLocaleString('ru');
+const css = k => getComputedStyle(document.querySelector('.viz-root')).getPropertyValue(k).trim();
+
+// waterfall
+const wf=[
+ {l:'Выручка от гостей', v:7956100, c:'--s1', tip:'Сумма всех позиций в отчётах: кабина 3 689 000, еда и напитки 3 125 600, пилинг 749 000, бельё 392 500'},
+ {l:'− газ, вода, свет (кабины)', v:1617825, c:'--s2', tip:'980.5 часов работы кабин × 1650 ₸, включая 24.5 подаренных часа'},
+ {l:'− закупка еды и напитков', v:1562800, c:'--s2', tip:'50% от 3 125 600 ₸ выручки по еде и напиткам'},
+ {l:'− скидки по сертификатам', v:236364, c:'--s2', tip:'Разница между суммой по прайсу и фактически полученными деньгами'},
+ {l:'− доля мастера (пилинг)', v:194000, c:'--s2', tip:'Пилинг принёс 749 000 ₸, из них вам 555 000 ₸, мастеру 194 000 ₸'},
+ {l:'= ваша прибыль', v:4345111, c:'--good', tip:'55.1% от фактически полученной выручки 7 891 186 ₸'},
+];
+const wfmax=Math.max(...wf.map(x=>x.v));
+document.getElementById('waterfall').innerHTML = wf.map(x=>`
+  <div class="bar-row" data-tip="${x.tip}">
+    <div class="bar-label" style="width:190px">${x.l}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${(x.v/wfmax*100).toFixed(1)}%;background:${css(x.c)}"></div></div>
+    <div class="bar-val">${n(x.v)} ₸</div></div>`).join('');
+
+// items
+const items=[
+ {name:'Кабина (980 ч)', rev:3689000, mar:2071175},
+ {name:'Пилинг', rev:749000, mar:555000},
+ {name:'Сазан жареный', rev:413200, mar:206600},
+ {name:'Пиво (обычное + «прага»)', rev:407850, mar:203925},
+ {name:'Простыня', rev:196500, mar:196500},
+ {name:'Полотенце', rev:170500, mar:170500},
+ {name:'Куырдак', rev:304200, mar:152100},
+ {name:'Рыбец', rev:112200, mar:56100},
+ {name:'Пиво разливное', rev:111900, mar:55950},
+ {name:'Квас', rev:111800, mar:55900},
+ {name:'Хлеб и хлебная корзина', rev:96200, mar:48100},
+ {name:'Кола 1 л', rev:84400, mar:42200},
+ {name:'Чай ташкентский', rev:71400, mar:35700},
+ {name:'Веник', rev:53000, mar:26500},
+ {name:'Пельмени', rev:52000, mar:26000},
+ {name:'Шапка банная', rev:25500, mar:25500},
+ {name:'Пиво Holsten', rev:48400, mar:24200},
+ {name:'Скраб/мочалка (товар)', rev:42300, mar:21150},
+ {name:'Массаж', rev:40000, mar:20000},
+ {name:'Шампунь одноразовый', rev:35500, mar:17750},
+];
+document.getElementById('items-table').innerHTML = items.map(i=>`
+  <tr><td>${i.name}</td><td class="num">${n(i.rev)}</td>
+  <td class="num"><b>${n(i.mar)}</b></td>
+  <td class="num">${Math.round(i.mar/i.rev*100)}%</td></tr>`).join('');
+
+function bars(id,data,fmt){
+  const mx=Math.max(...data.map(d=>d.v));
+  document.getElementById(id).innerHTML=data.map(d=>`
+    <div class="bar-row"${d.tip?` data-tip="${d.tip}"`:''}>
+      <div class="bar-label">${d.l}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(d.v/mx*100).toFixed(1)}%;background:${d.c||css('--s4')}"></div></div>
+      <div class="bar-val">${fmt(d.v)}</div></div>`).join('');
+}
+
+bars('cabin-bars',[
+ {l:'Кабина 2', v:150, tip:'Обычная кабина, 3000–4000 ₸/час'},
+ {l:'Кабина 3', v:143, tip:'Обычная кабина, 3000–4000 ₸/час'},
+ {l:'Кабина 4', v:124, tip:'Обычная кабина, 3000–4000 ₸/час'},
+ {l:'Кабина 5', v:41, tip:'Используется редко — стоит выяснить причину'},
+ {l:'Кабина 1 (VIP)', v:13, c:css('--s7'), tip:'VIP, 7000 ₸/час — самая доходная за час, но почти не продаётся'},
+ {l:'Кабина 6', v:12, tip:'Используется редко — стоит выяснить причину'},
+], v=>v+' визитов');
+
+bars('pay-bars',[
+ {l:'Kaspi', v:1561405, c:css('--s7')},
+ {l:'Смешанная оплата', v:498100, c:css('--s7')},
+ {l:'Наличные', v:438606, c:css('--s7')},
+ {l:'Дистанционно', v:15000, c:css('--s7')},
+ {l:'Перевод', v:14500, c:css('--s7')},
+], v=>n(v)+' ₸');
+
+// hours chart
+const HC={0:4,1:1,2:1,11:3,12:6,13:10,14:11,15:29,16:22,17:28,18:35,19:54,20:84,21:124,22:82,23:22};
+(function(){
+  const svg=document.getElementById('ch-hour');
+  const W=1000,H=200,pL=48,pR=16,pT=18,pB=30, w=W-pL-pR, h=H-pT-pB;
+  const hrs=Array.from({length:24},(_,i)=>i), mx=Math.max(...Object.values(HC));
+  const bw=w/hrs.length*0.68; let s='';
+  for(let i=0;i<=4;i++){const y=pT+h-h*i/4;
+    s+=`<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="${css('--grid')}" stroke-width="1"/>`;
+    s+=`<text x="${pL-8}" y="${y+4}" text-anchor="end">${Math.round(mx*i/4)}</text>`;}
+  hrs.forEach((hh,i)=>{const v=HC[hh]||0, cx=pL+w*(i+.5)/hrs.length, bh=v/mx*h;
+    const peak = hh>=19&&hh<=22;
+    s+=`<rect x="${cx-bw/2}" y="${pT+h-bh}" width="${bw}" height="${bh}" rx="2" fill="${peak?css('--good'):css('--s1')}"><title>${hh}:00 — ${v} сеансов</title></rect>`;
+    if(i%2===0) s+=`<text x="${cx}" y="${H-9}" text-anchor="middle">${hh}</text>`;});
+  s+=`<line x1="${pL}" y1="${pT+h}" x2="${W-pR}" y2="${pT+h}" stroke="${css('--axis')}" stroke-width="1.5"/>`;
+  svg.innerHTML=s;
+})();
+</script>
+
+</body>
+</html>

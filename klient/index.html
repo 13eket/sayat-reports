@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#faf9f5">
+<title>Саят — кто наш гость и как заработать больше</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧖</text></svg>">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;padding:0;background:#f7f6f2;color:#111;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:19px;line-height:1.75}
+  .wrap{max-width:820px;margin:0 auto;padding:28px 20px 70px}
+
+  h1{font-size:1.9rem;line-height:1.25;margin:0 0 10px}
+  .lead{font-size:1.08rem;color:#3d3b37;margin:0 0 26px}
+  .card{background:#fff;border:1px solid #e2e0d8;border-radius:14px;padding:24px 26px;margin-bottom:22px}
+  .card h2{font-size:1.35rem;line-height:1.3;margin:0 0 14px;display:flex;gap:12px;align-items:baseline}
+  .card h2 .num{flex:none;width:38px;height:38px;border-radius:50%;background:#0f7a34;color:#fff;
+    font-size:1.05rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;line-height:1}
+  p{margin:0 0 14px}
+  p:last-child{margin-bottom:0}
+  b{color:#000}
+  .big{font-size:1.5rem;font-weight:800;color:#0f7a34;line-height:1.3;display:block;margin:14px 0}
+  .big.red{color:#c0431c}
+
+  /* 100 человечков */
+  .dots{display:grid;grid-template-columns:repeat(20,1fr);gap:5px;max-width:520px;margin:16px 0 12px}
+  .dots i{display:block;padding-top:100%;border-radius:3px;background:#dedcd3}
+  .dots i.on{background:#0f7a34}
+  .dots i.mid{background:#9fcfae}
+  .legend{font-size:0.92rem;color:#55534e;margin:0 0 6px}
+  .legend .sq{display:inline-block;width:13px;height:13px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:1rem}
+  th,td{text-align:left;padding:11px 10px;border-bottom:1px solid #e6e4dc}
+  th{font-size:0.92rem;color:#55534e;font-weight:600}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.hi td{background:#eaf6ee;font-weight:700}
+  .scroll{overflow-x:auto}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  .box{border:2px solid #e2e0d8;border-radius:12px;padding:16px 18px;background:#fbfaf7}
+  .box.good{border-color:#0f7a34;background:#f1f8f3}
+  .box.bad{border-color:#d8d6cd}
+  .box h3{margin:0 0 10px;font-size:1.05rem}
+  .box ul{margin:0;padding-left:20px}
+  .box li{margin-bottom:6px}
+
+  .who{border-left:5px solid #0f7a34;padding:4px 0 4px 18px;margin:0 0 20px}
+  .who h3{margin:0 0 4px;font-size:1.15rem}
+  .who .money{color:#0f7a34;font-weight:700}
+  .who.gray{border-left-color:#b9b6ac}
+  .who.gray .money{color:#55534e}
+
+  .offer{border:1px solid #e2e0d8;border-radius:12px;padding:20px 22px;margin-bottom:16px;background:#fff}
+  .offer.star{border:2px solid #0f7a34;background:#f4faf6}
+  .offer h3{margin:0 0 6px;font-size:1.2rem;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .offer .tag{flex:none;font-size:0.8rem;font-weight:700;color:#0f7a34;background:#e2f2e7;
+    padding:3px 10px;border-radius:20px;white-space:nowrap}
+  .offer .say{background:#f4f3ee;border-radius:9px;padding:13px 15px;margin:12px 0 0;font-size:1rem}
+  .offer .say b{display:block;font-size:0.85rem;color:#55534e;margin-bottom:5px;font-weight:600}
+  .money-line{margin-top:12px;padding-top:12px;border-top:1px dashed #ddd;font-size:1rem}
+  .money-line b{color:#0f7a34;font-size:1.1rem}
+
+  .rule{background:#fff6e5;border:1px solid #f0c96a;border-radius:12px;padding:20px 22px;margin-bottom:22px}
+  .nav{margin:0 0 24px}
+  .nav a{display:inline-block;font-size:0.95rem;text-decoration:none;color:#3d3b37;
+    border:1px solid #ddd;background:#fff;padding:8px 15px;border-radius:22px}
+  footer{color:#6b6961;font-size:0.9rem;line-height:1.65;margin-top:34px}
+
+  @media (max-width:640px){
+    body{font-size:17.5px}
+    .wrap{padding:20px 15px 55px}
+    h1{font-size:1.45rem}
+    .card{padding:18px 16px;border-radius:12px}
+    .card h2{font-size:1.15rem;gap:10px}
+    .card h2 .num{width:32px;height:32px;font-size:0.95rem}
+    .two{grid-template-columns:1fr}
+    .dots{grid-template-columns:repeat(10,1fr)}
+    .big{font-size:1.25rem}
+    th,td{padding:9px 7px;font-size:0.93rem}
+    .offer{padding:16px 15px}
+  }
+  @media print{ body{background:#fff} .card,.offer{break-inside:avoid} .nav{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Баня «Саят»: кто нам платит и как заработать больше</h1>
+  <p class="lead">Коротко и по делу. Всё посчитано по нашим же тетрадям — 266 листов отчётов с 26 февраля по 28 августа 2026 года. Никаких догадок: только то, что записано рукой администратора.</p>
+
+  <div class="nav"><a href="../">← Полный отчёт с цифрами</a></div>
+
+  <div class="card">
+    <h2><span class="num">1</span>Главное в трёх строках</h2>
+    <p>Половину всех денег нам приносят <b>16 гостей из каждых 100</b>.</p>
+    <p>Это те, кто приезжает <b>компанией на 3 часа и заказывает стол</b>.</p>
+    <p>Остальные 84 моются час и уходят. Они не плохие — просто денег от них мало.</p>
+    <span class="big">Значит, работать надо не «чтобы пришло больше людей», а чтобы <u>приходило больше компаний</u>.</span>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">2</span>Посмотрите на 100 гостей</h2>
+    <p class="legend"><span class="sq" style="background:#0f7a34"></span>16 человек — приносят <b>половину</b> всех денег бани.
+      <br><span class="sq" style="background:#9fcfae"></span>47 человек — приносят вторую половину.
+      <br><span class="sq" style="background:#dedcd3"></span>37 человек — приносят всего <b>12 копеек с рубля</b>.</p>
+    <div class="dots" id="dots"></div>
+    <p>Один и тот же час в кабине. Одна и та же баня. Разница только в том, что человек заказал, кроме кабины.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">3</span>Чем богатый гость отличается от бедного</h2>
+    <div class="two">
+      <div class="box good">
+        <h3>Гость на 25 000 ₸ и больше</h3>
+        <ul>
+          <li>Приходит <b>компанией 3–4 человека</b></li>
+          <li>Сидит <b>3 часа</b></li>
+          <li>Заказывает еду — <b>7 из 10</b></li>
+          <li>Берёт пиво — <b>6 из 10</b></li>
+          <li>Берёт пилинг — <b>5 из 10</b></li>
+        </ul>
+      </div>
+      <div class="box bad">
+        <h3>Гость до 10 000 ₸</h3>
+        <ul>
+          <li>Приходит <b>вдвоём</b></li>
+          <li>Сидит <b>час с небольшим</b></li>
+          <li>Заказывает еду — <b>1 из 10</b></li>
+          <li>Берёт пиво — <b>1 из 10</b></li>
+          <li>Берёт пилинг — <b>1 из 10</b></li>
+        </ul>
+      </div>
+    </div>
+    <p>Приходят они <b>в одно и то же время</b> — около восьми вечера, и в одни и те же дни. Разница не в человеке. Разница в том, <b>предложили ему стол или нет</b>.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">4</span>Сколько стоит один и тот же вечер</h2>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Что взял гость</th><th class="num">Сколько заплатил</th></tr></thead>
+      <tbody>
+        <tr><td>Только кабина</td><td class="num">10 283 ₸</td></tr>
+        <tr><td>Кабина и пилинг</td><td class="num">16 395 ₸</td></tr>
+        <tr><td>Кабина и еда</td><td class="num">20 374 ₸</td></tr>
+        <tr class="hi"><td>Кабина, еда и пилинг</td><td class="num">29 454 ₸</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Разница между первой и последней строкой — <b>19 000 ₸ с одного вечера</b>. И это не новые гости, не реклама и не вложения. Это один и тот же гость, которому вовремя предложили поесть.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">5</span>Кто к нам ходит — пять типов</h2>
+
+    <div class="who">
+      <h3>1. Компания на праздник — наш главный гость</h3>
+      <p>4 и больше человек, 3 часа, стол и пилинг. <span class="money">Средний счёт 25 800 ₸.</span> А в первой кабине (VIP) такие компании оставляют <span class="money">в среднем 68 600 ₸</span> — но за полгода их было всего 12. Эту кабину почти не предлагают.</p>
+    </div>
+
+    <div class="who">
+      <h3>2. Дневные гости — их мало, а платят больше всех</h3>
+      <p>Кто приходит с 11 до 16 часов, оставляет <span class="money">в среднем 21 500 ₸</span> — больше, чем вечерние (12 900 ₸), и сидит дольше. Но днём у нас всего 15 гостей из 100. Днём кабины стоят пустые, а деньги там хорошие.</p>
+    </div>
+
+    <div class="who">
+      <h3>3. Пара на вечер — самый частый гость</h3>
+      <p>Двое, полтора-два часа, <span class="money">10 200 ₸</span>. Их больше всего. Еду берёт только треть. Если довести до половины — это самый простой рост, какой у нас есть.</p>
+    </div>
+
+    <div class="who">
+      <h3>4. Один человек на пилинг</h3>
+      <p>Приходит сам, на час с небольшим, <span class="money">9 900 ₸</span>. Но пилинг берут <b>две трети таких гостей</b> — а пилинг для нас самый выгодный: из каждых 100 ₸ нам остаётся 74.</p>
+    </div>
+
+    <div class="who gray">
+      <h3>5. «Помыться за час» — денег почти нет</h3>
+      <p>Час, <span class="money">5 900 ₸</span>, еду берёт один из восьми. Таких визитов треть, а денег от них — одна восьмая. Гнаться за ними отдельно не надо: они и так придут.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">6</span>Что для гостей важно на самом деле</h2>
+    <p>Мы спросили у гостей напрямую (опрос был анонимный, ответили 15 человек). Вот что они назвали важным, по порядку:</p>
+    <div class="scroll">
+    <table>
+      <tbody>
+        <tr><td>Уединение, чтобы никто не мешал</td><td class="num">10 из 15</td></tr>
+        <tr><td>Чистота</td><td class="num">10 из 15</td></tr>
+        <tr class="hi"><td>Вкусная еда</td><td class="num">10 из 15</td></tr>
+        <tr><td>Вежливый и быстрый персонал</td><td class="num">8 из 15</td></tr>
+        <tr><td>Горячий пар</td><td class="num">7 из 15</td></tr>
+        <tr><td>Пилинг, массаж и прочие услуги</td><td class="num">7 из 15</td></tr>
+        <tr><td>Удобное место</td><td class="num">6 из 15</td></tr>
+        <tr><td><b>Дешевизна</b></td><td class="num"><b>6 из 15 — последнее место</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><b>Еда стоит наравне с чистотой и паром. А низкая цена — на последнем месте.</b> Это значит, что снижать цену бессмысленно: люди приходят не за дешевизной.</p>
+    <p>Ещё они сказали, чего им не хватает: <b>банщика</b> (5 человек из 15) и <b>выбора в меню</b> (5 из 15). Это и есть готовый список, что делать.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">7</span>Почему гости не возвращаются</h2>
+    <span class="big red">Из 384 наших гостей вернулись второй раз только 37.</span>
+    <p>Мы посмотрели, чем отличался <b>первый вечер</b> тех, кто потом вернулся, от тех, кто пропал навсегда:</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>В первый вечер</th><th class="num">Кто вернулся</th><th class="num">Кто не вернулся</th></tr></thead>
+      <tbody>
+        <tr class="hi"><td>Заказал еду</td><td class="num">43%</td><td class="num">35%</td></tr>
+        <tr class="hi"><td>Взял пиво</td><td class="num">41%</td><td class="num">31%</td></tr>
+        <tr><td>Пришёл в выходной</td><td class="num">54%</td><td class="num">41%</td></tr>
+        <tr><td>Сколько заплатил</td><td class="num">12 926 ₸</td><td class="num">13 346 ₸</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Смотрите на последнюю строку: <b>те, кто вернулся, заплатили в первый раз даже чуть меньше</b>. Дело не в деньгах. Возвращается тот, кто у нас <b>посидел и поел</b>, а не тот, кто просто помылся и ушёл.</p>
+    <p>Возвращаются обычно <b>через месяц</b> — это надо помнить, когда напоминаем о себе.</p>
+  </div>
+
+  <div class="rule">
+    <p style="margin:0"><b>Одно правило, если запомнить только его:</b><br>
+    посадить гостя за стол важнее, чем взять с него дорого. Стол поднимает счёт вдвое <b>и</b> возвращает человека снова.</p>
+  </div>
+
+  <h2 style="font-size:1.5rem;margin:34px 0 6px">Что предлагать гостям — 7 готовых предложений</h2>
+  <p class="lead" style="margin-bottom:20px">Все они выгодные: считаем по нашим же расходам — газ, вода и свет на кабину, доля мастера за пилинг, половина цены на продукты.</p>
+
+  <div class="offer star">
+    <h3>1. «Вечер на компанию» — 28 000 ₸<span class="tag">прибыль 16 000 ₸</span></h3>
+    <p>Кабина на 3 часа + горячий стол (куырдак, сазан, хлебная корзина, чай) + пилинг на двоих + простыни и полотенца на всех. До 6 человек.</p>
+    <div class="say"><b>Как говорить по телефону:</b> «Есть готовый вечер на компанию — три часа, кабина, накрытый стол и пилинг, 28 тысяч на всех. Ничего с собой везти не нужно. На какое время накрывать?»</div>
+    <div class="money-line">Обычный визит приносит нам <b>8 000 ₸</b> прибыли. Такой вечер — <b>16 000 ₸</b>. Один такой пакет заменяет двух обычных гостей. По отдельности всё это стоило бы 29 500 ₸ — полторы тысячи отдаём как скидку за то, что берут целиком.</div>
+  </div>
+
+  <div class="offer star">
+    <h3>2. «Дневной стол» с 12 до 17 — 14 000 ₸<span class="tag">пустые часы</span></h3>
+    <p>Два часа кабины и обед на двоих-троих, только в будни днём. Днём у нас кабины пустуют, а те редкие, кто приходит, платят больше вечерних.</p>
+    <div class="say"><b>Кому предлагать:</b> пенсионерам, тем, кто работает по сменам, водителям, бригадам со стройки, соседним конторам. Им вечером неудобно, а днём — в самый раз.</div>
+    <div class="money-line">Один такой обед в день приносит <b>7 700 ₸</b> прибыли, то есть около <b>230 000 ₸ в месяц</b>. Даже если продавать только кабину без обеда — <b>80 000 ₸ в месяц</b>. Кабины уже стоят, платить за них мы и так платим.</div>
+  </div>
+
+  <div class="offer star">
+    <h3>3. Абонемент «5 часов по цене 4» — 16 000 ₸<span class="tag">деньги вперёд</span></h3>
+    <p>Гость платит сегодня, ходит когда хочет до конца года, часами можно делиться с семьёй.</p>
+    <div class="say"><b>Как говорить на кассе:</b> «Возьмите абонемент — пять часов за шестнадцать тысяч вместо двадцати. Действует до Нового года, можно приходить с семьёй.»</div>
+    <div class="money-line">Это лечит нашу главную беду: <b>из 100 гостей 84 не возвращаются</b>. Человека с оплаченными часами уговаривать не надо — он придёт сам. И деньги мы получаем сразу.</div>
+  </div>
+
+  <div class="offer">
+    <h3>4. Стол предлагать всегда — пока кабина греется<span class="tag">не стоит ни тенге</span></h3>
+    <p>Сейчас еду заказывает только каждый третий. А кто заказал — платит вдвое больше и возвращается чаще.</p>
+    <div class="say"><b>Как говорить (важно спросить именно так):</b> «Кабина будет готова через десять минут. Пока греется — куырдак поставить?»<br>
+    Не надо спрашивать «желаете что-нибудь?» — на такой вопрос отвечают «нет».</div>
+    <div class="money-line">Довести долю заказов еды с трети до половины — примерно <b>+125 000 ₸</b> прибыли в месяц без единого нового гостя.</div>
+  </div>
+
+  <div class="offer">
+    <h3>5. Пилинг предлагать всем, кто пришёл с 17 до 19<span class="tag">самая выгодная услуга</span></h3>
+    <p>В эти часы пилинг берут почти половина гостей — сами. Значит, если предлагать каждому, возьмут ещё больше. Из каждых 100 ₸ за пилинг нам остаётся 74 — это лучше, чем кабина и еда.</p>
+    <div class="money-line">В июле пилинг брали 4 гостя из 10, в июне — меньше одного из 10. Гости те же, цена та же — разница только в том, кто стоял на смене. Вернуться к июльскому уровню — это <b>+19 000 ₸</b> в месяц.</div>
+  </div>
+
+  <div class="offer">
+    <h3>6. Первую кабину предлагать каждой компании от 4 человек<span class="tag">68 600 ₸ средний счёт</span></h3>
+    <p>Кабина №1 дороже, но именно там компании оставляют больше всего денег. За полгода её взяли всего 12 раз — её просто не предлагают, потому что проще посадить в свободную обычную.</p>
+    <div class="say"><b>Как говорить:</b> «Вас четверо — тогда лучше первую кабину, она просторнее и там удобнее с застольем.»</div>
+  </div>
+
+  <div class="offer">
+    <h3>7. «Приведи друга» — по 30 минут в подарок обоим<span class="tag">подарок стоит 825 ₸</span></h3>
+    <p>Сообщение в WhatsApp через час после визита, а не плакат на стене.</p>
+    <div class="say"><b>Текст сообщения:</b> «Спасибо, что были у нас! Передайте наш номер знакомым — вам и им по 30 минут в подарок к следующему визиту.»</div>
+    <div class="money-line">Полчаса кабины обходятся нам в <b>825 ₸</b>. Новый гость приносит <b>8 000 ₸</b> прибыли. Считать тут нечего.</div>
+  </div>
+
+  <div class="card" style="margin-top:26px">
+    <h2><span class="num">!</span>Чего делать не надо</h2>
+    <p><b>Не снижать цену.</b> Дешевизна у гостей на последнем месте по важности. Скидка режет наши деньги, а гостей от неё больше не становится.</p>
+    <p><b>Не дарить вход просто так.</b> 25 августа мы подарили часы: 10 компаний из 25 не купили вообще ничего, а газ и вода на подаренные часы стоили нам 31 350 ₸. Дарить можно — но только в обмен на телефон, отзыв или заказ.</p>
+    <p><b>Не гнаться за теми, кто моется за час.</b> Их треть, а денег от них восьмая часть. Они придут и так.</p>
+    <p><b>Не терять телефоны.</b> Телефон записан только у трёх гостей из четырёх. Всё, что остаётся у нас после визита, — это номер. Без него гостя не вернуть.</p>
+  </div>
+
+  <footer>
+    Как считали: всё взято из 266 листов рукописных отчётов за 26 февраля — 28 августа 2026 года и из анонимного опроса гостей (15 ответов). Прибыль считается после расходов на визит: газ, вода и свет — 1650 ₸ за каждый час работы кабины; за пилинг часть уходит мастеру; на продукты и напитки заложена половина цены. Зарплаты, аренда и налоги сюда не входят.<br><br>
+    Отдельно: количество людей в компании администраторы записывали не всегда — оно есть примерно у половины визитов, поэтому средние по «сколько человек» посчитаны по этой половине. Вернувшихся гостей всего 37 — направление по ним понятное, но точные проценты могут немного гулять.<br><br>
+    <a href="../" style="color:#0f7a34">← Вернуться к полному отчёту</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const el=document.getElementById('dots'); if(!el) return;
+  let s='';
+  for(let i=0;i<100;i++){ s += '<i class="'+(i<16?'on':(i<63?'mid':''))+'"></i>'; }
+  el.innerHTML=s;
+})();
+</script>
+</body>
+</html>

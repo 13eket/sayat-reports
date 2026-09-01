@@ -86,6 +86,84 @@
     .offer{padding:16px 15px}
   }
   @media print{ body{background:#fff} .card,.offer{break-inside:avoid} .nav{display:none} }
+
+  /* ===== «Покрутите цифры сами» ===== */
+  .ex-filters{margin:6px 0 20px}
+  .ex-frow{display:flex;gap:10px;align-items:baseline;margin-bottom:9px;flex-wrap:wrap}
+  .ex-flab{flex:none;width:150px;font-size:0.88rem;color:#55534e}
+  .ex-chips{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 240px}
+  .ex-chip{font:inherit;font-size:0.86rem;line-height:1.2;padding:7px 12px;border-radius:20px;
+    border:1px solid #dcd9d0;background:#fbfaf7;color:#3d3b37;cursor:pointer}
+  .ex-chip:hover{border-color:#0f7a34;color:#0f7a34}
+  .ex-chip.on{background:#0f7a34;border-color:#0f7a34;color:#fff;font-weight:600}
+  .ex-chip.sm{font-size:0.8rem;padding:5px 10px}
+  .ex-chip.ex-reset{margin-left:auto;border-style:dashed;color:#6b6961}
+  .ex-chip:focus-visible{outline:2px solid #0f7a34;outline-offset:2px}
+
+  .ex-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 26px}
+  .ex-tile{border:1px solid #e6e4dc;border-radius:11px;padding:12px 13px;background:#fbfaf7}
+  .ex-tk{font-size:0.83rem;color:#55534e;line-height:1.35}
+  .ex-tv{font-size:1.28rem;font-weight:800;color:#0f7a34;line-height:1.25;margin:3px 0 1px;
+    font-variant-numeric:tabular-nums}
+  .ex-ts{font-size:0.76rem;color:#8a877f;line-height:1.3}
+
+  .ex-block{margin:0 0 30px}
+  .ex-block h3{font-size:1.08rem;margin:0 0 10px;line-height:1.35}
+  .ex-bh{display:flex;gap:10px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+  .ex-switch{display:flex;gap:6px;margin-bottom:10px}
+  .ex-sub{font-size:0.88rem;color:#55534e;margin:16px 0 6px}
+  .ex-inline{margin:0}
+  .ex-note{font-size:0.83rem;color:#6b6961;line-height:1.5;margin-top:9px}
+  .ex-empty{padding:22px;text-align:center;color:#6b6961;background:#fbfaf7;
+    border:1px dashed #dcd9d0;border-radius:11px}
+
+  .ex-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .ex-hm{display:grid;gap:2px;min-width:520px}
+  .ex-hc{font-size:0.7rem;color:#8a877f;text-align:center;padding-bottom:2px}
+  .ex-hr{font-size:0.78rem;color:#55534e;display:flex;align-items:center}
+  .ex-cell{aspect-ratio:1/1;min-height:26px;border-radius:4px;background:#f4f3ee;
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.7rem;font-variant-numeric:tabular-nums;color:#3d3b37;cursor:default}
+  .ex-cell:focus-visible{outline:2px solid #111;outline-offset:1px}
+
+  .ex-bars{display:flex;flex-direction:column;gap:7px}
+  .ex-bar{display:flex;align-items:center;gap:10px}
+  .ex-blab{flex:none;width:150px;font-size:0.88rem;color:#3d3b37;line-height:1.3}
+  .ex-btrack{flex:1;height:16px;background:#f1efe8;border-radius:4px;overflow:hidden}
+  .ex-bfill{height:100%;border-radius:4px}
+  .ex-bval{flex:none;width:112px;text-align:right;font-size:0.86rem;font-weight:600;
+    font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ex-gt{font-size:0.86rem;color:#55534e;margin-top:10px}
+  .ex-gt:first-child{margin-top:0}
+
+  .ex-legend{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 12px;font-size:0.84rem;color:#3d3b37}
+  .ex-li{display:inline-flex;align-items:center;gap:6px}
+  .ex-li i{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+  .ex-cols{display:flex;gap:10px;align-items:flex-end;min-width:340px;height:210px}
+  .ex-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;min-width:36px}
+  .ex-colh{height:150px;display:flex;align-items:flex-end}
+  .ex-stack{width:100%;display:flex;flex-direction:column-reverse;gap:2px;border-radius:4px;overflow:hidden}
+  .ex-seg{width:100%;min-height:2px}
+  .ex-cval{font-size:0.72rem;color:#55534e;text-align:center;margin-top:5px;font-variant-numeric:tabular-nums}
+  .ex-clab{font-size:0.8rem;color:#3d3b37;text-align:center}
+
+  .ex-table{font-size:0.92rem;min-width:460px}
+
+  .ex-tip{position:absolute;z-index:50;max-width:250px;background:#1c1b18;color:#fff;
+    font-size:0.82rem;line-height:1.45;padding:9px 11px;border-radius:9px;pointer-events:none;
+    box-shadow:0 6px 20px rgba(0,0,0,.22)}
+  .ex-tip b{color:#fff}
+
+  @media (max-width:640px){
+    .ex-flab{width:100%}
+    .ex-tiles{grid-template-columns:repeat(2,1fr)}
+    .ex-tv{font-size:1.12rem}
+    .ex-blab{width:96px;font-size:0.82rem}
+    .ex-bval{width:92px;font-size:0.8rem}
+    .ex-chip.ex-reset{margin-left:0}
+  }
+  @media print{ .ex-filters,.ex-switch{display:none} }
 </style>
 </head>
 <body>
@@ -289,6 +367,20 @@
     <p><b>Не терять телефоны.</b> Телефон записан только у трёх гостей из четырёх. Всё, что остаётся у нас после визита, — это номер. Без него гостя не вернуть.</p>
   </div>
 
+  <div class="card" style="margin-top:26px">
+    <h2><span class="num">?</span>Покрутите цифры сами</h2>
+    <p>Всё, что написано выше, — это средние по бане. А здесь можно посмотреть на любой кусок отдельно:
+      только выходные, только дневные гости, только компании из четырёх человек, только те, кто взял пиво.
+      Нажимайте на кнопки — все цифры и картинки ниже пересчитаются сразу.</p>
+    <p class="ex-note" style="margin-bottom:0">Считается по 526 визитам из тетрадей с конца февраля по 28 августа 2026 года
+      (выручка 7 953 625 ₸). Это те записи, которые удалось разобрать построчно; итоговые листы дня,
+      чтобы не считать деньги дважды, из расчёта убраны. Время прихода, число людей и номер кабины
+      записаны не у каждого визита — под каждой картинкой написано, по скольким визитам она посчитана.
+      Дата листа местами восстановлена по дате фотографии, поэтому день недели у части визитов может
+      гулять на сутки; час прихода записан рукой и точен.</p>
+    <div id="ex-root"></div>
+  </div>
+
   <footer>
     Как считали: всё взято из 266 листов рукописных отчётов за 26 февраля — 28 августа 2026 года и из анонимного опроса гостей (15 ответов). Прибыль считается после расходов на визит: газ, вода и свет — 1650 ₸ за каждый час работы кабины; за пилинг часть уходит мастеру; на продукты и напитки заложена половина цены. Зарплаты, аренда и налоги сюда не входят.<br><br>
     Отдельно: количество людей в компании администраторы записывали не всегда — оно есть примерно у половины визитов, поэтому средние по «сколько человек» посчитаны по этой половине. Вернувшихся гостей всего 37 — направление по ним понятное, но точные проценты могут немного гулять.<br><br>
@@ -304,5 +396,7 @@
   el.innerHTML=s;
 })();
 </script>
+<script src="data.js"></script>
+<script src="explorer.js"></script>
 </body>
 </html>

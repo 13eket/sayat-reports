@@ -1,0 +1,348 @@
+{
+  "meta": {
+    "title": "Оплата, расходы за август 2026",
+    "month": "2026-08",
+    "currency": "KZT",
+    "source_photo": "expences.JPG",
+    "transcribed_on": "2026-09-11",
+    "stated_totals": {
+      "revenue": 2329110,
+      "expenses": 1393691.22,
+      "expenses_note": "не считая бензина и проезда на такси"
+    },
+    "computed_totals": {
+      "expenses": 1393691.22,
+      "matches_stated": true,
+      "note": "Сумма 21 позиции с суммой сходится с рукописным итогом до копейки. Позиции 22 (бензин) и 23 (такси) без сумм."
+    },
+    "reading_notes": [
+      "п. 12: разборчиво читается «1x 10450 (квас)» и «92210 (пиво)». Подстрочная расшифровка пива (21500 за 30 л + 35350 за 50 л «Австр» + 34850 «Брага») даёт 91700, т.е. на 510 ₸ меньше подписанного 92210 — одна из трёх цифр прочитана с погрешностью, но в итог месяца входит именно 92210 (только с ним итог сходится с 1 393 691,22).",
+      "п. 1-3: пометка «пл. 04/VIII.26», «пл. 03/VIII.26», «пл. 05/VIII.26» — это даты оплаты в начале августа за ИЮЛЬСКОЕ потребление.",
+      "п. 21: «расходы за работу электрика, газовщика, техничке» — прочтение слов 2 и 3 неуверенное, сумма 50 000 читается чётко.",
+      "Общая выручка на листе (2 329 110 ₸) — это цифра самой бани, не из otchet_photos_text.json."
+    ]
+  },
+  "items": [
+    {
+      "n": 1,
+      "name": "Су Арнасы — вода",
+      "amount": 10065.85,
+      "category": "utilities",
+      "cost_type": "variable_cabin",
+      "allocation": "cabin_hour",
+      "accrual_period": "2026-07",
+      "paid_date": "2026-08-04",
+      "recurrence": "monthly",
+      "note": "Счёт за июль, оплачен в августе. Для августовской себестоимости требует пересчёта по росту загрузки.",
+      "confidence": "high"
+    },
+    {
+      "n": 2,
+      "name": "Атырау Жарық — электроэнергия",
+      "amount": 78853.81,
+      "category": "utilities",
+      "cost_type": "variable_cabin",
+      "allocation": "cabin_hour",
+      "accrual_period": "2026-07",
+      "paid_date": "2026-08-03",
+      "recurrence": "monthly",
+      "note": "Счёт за июль, оплачен в августе. Содержит и постоянную базовую нагрузку (свет, холодильники, насосы), и переменную часть.",
+      "confidence": "high"
+    },
+    {
+      "n": 3,
+      "name": "Газ Атырау — потребление",
+      "amount": 17143.56,
+      "category": "utilities",
+      "cost_type": "variable_cabin",
+      "allocation": "cabin_hour",
+      "accrual_period": "2026-07",
+      "paid_date": "2026-08-05",
+      "recurrence": "monthly",
+      "note": "Счёт за июль, оплачен в августе.",
+      "confidence": "high"
+    },
+    {
+      "n": 4,
+      "name": "Газ Атырау — внутреннее техобслуживание",
+      "amount": 9650,
+      "category": "utilities",
+      "cost_type": "fixed_quarterly",
+      "allocation": "cabin_hour",
+      "accrual_period": "2026-Q3",
+      "recurrence": "quarterly",
+      "note": "Платёж за квартал; в помесячном разрезе ≈3 216,67 ₸/мес.",
+      "confidence": "high"
+    },
+    {
+      "n": 5,
+      "name": "Зарплата всем (персонал)",
+      "amount": 200000,
+      "category": "payroll",
+      "cost_type": "fixed_monthly",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "monthly",
+      "note": "В модели прибыли на сайте зарплаты не учитывались вообще.",
+      "confidence": "high"
+    },
+    {
+      "n": 6,
+      "name": "Зарплата бухгалтера",
+      "amount": 30300,
+      "category": "payroll",
+      "cost_type": "fixed_monthly",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "monthly",
+      "confidence": "high"
+    },
+    {
+      "n": 7,
+      "name": "Ежемесячные налоги (пенс., соц. отчисления, страхование)",
+      "amount": 35700,
+      "category": "taxes",
+      "cost_type": "fixed_monthly",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "monthly",
+      "confidence": "high"
+    },
+    {
+      "n": 8,
+      "name": "Остаток налога за I полугодие",
+      "amount": 43000,
+      "category": "taxes",
+      "cost_type": "one_off",
+      "allocation": "overhead",
+      "accrual_period": "2026-H1",
+      "recurrence": "one_off",
+      "note": "Догоняющий платёж за январь-июнь, к августу как к месяцу не относится.",
+      "confidence": "high"
+    },
+    {
+      "n": 9,
+      "name": "Септик (откачка)",
+      "amount": 96000,
+      "category": "utilities",
+      "cost_type": "variable_cabin",
+      "allocation": "cabin_hour",
+      "accrual_period": "2026-08",
+      "recurrence": "periodic",
+      "note": "Единственная коммуналка, относящаяся к самому августу. Растёт вместе с расходом воды, т.е. с загрузкой кабин.",
+      "confidence": "high"
+    },
+    {
+      "n": 10,
+      "name": "Телефон — тариф",
+      "amount": 3990,
+      "category": "admin",
+      "cost_type": "fixed_monthly",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "monthly",
+      "confidence": "high"
+    },
+    {
+      "n": 11,
+      "name": "Веники (закуп)",
+      "amount": 18000,
+      "category": "cogs_service",
+      "cost_type": "variable_goods",
+      "allocation": "goods_cogs",
+      "accrual_period": "2026-08",
+      "recurrence": "as_needed",
+      "components": [
+        { "qty": 5, "unit_price": 1900, "sum": 9500 },
+        { "qty": 5, "unit_price": 1700, "sum": 8500 }
+      ],
+      "note": "10 веников, средняя закупка 1 800 ₸. В модели прибыли веник шёл как услуга со 100% маржой — себестоимость не вычиталась.",
+      "confidence": "high"
+    },
+    {
+      "n": 12,
+      "name": "Пиво, квас (от фермера)",
+      "amount": 102660,
+      "category": "cogs_alcohol",
+      "cost_type": "variable_goods",
+      "allocation": "goods_cogs",
+      "accrual_period": "2026-08",
+      "recurrence": "as_needed",
+      "components": [
+        { "what": "квас", "qty": 1, "sum": 10450 },
+        {
+          "what": "пиво",
+          "sum": 92210,
+          "breakdown_on_sheet": [
+            { "qty": 1, "volume": "30 л", "sum": 21500 },
+            { "qty": 1, "volume": "50 л", "label": "Австр.", "sum": 35350 },
+            { "qty": 1, "label": "Брага", "sum": 34850 }
+          ],
+          "breakdown_sum": 91700,
+          "breakdown_delta": 510,
+          "confidence": "medium"
+        }
+      ],
+      "note": "Закуп, а не потребление: часть бочек переходит на сентябрь.",
+      "confidence": "high"
+    },
+    {
+      "n": 13,
+      "name": "Вода, кола, лимонад (закуп)",
+      "amount": 90060,
+      "category": "cogs_drink",
+      "cost_type": "variable_goods",
+      "allocation": "goods_cogs",
+      "accrual_period": "2026-08",
+      "recurrence": "as_needed",
+      "note": "Закуп безалкогольных напитков.",
+      "confidence": "high"
+    },
+    {
+      "n": 14,
+      "name": "Вентиляторы для кабин",
+      "amount": 14000,
+      "category": "capex",
+      "cost_type": "capex",
+      "allocation": "capex",
+      "accrual_period": "2026-08",
+      "recurrence": "one_off",
+      "confidence": "high"
+    },
+    {
+      "n": 15,
+      "name": "Сертификаты",
+      "amount": 4000,
+      "category": "admin",
+      "cost_type": "one_off",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "one_off",
+      "note": "Печать подарочных сертификатов (скидки по ним уже сидят в выручке).",
+      "confidence": "medium"
+    },
+    {
+      "n": 16,
+      "name": "Инвентарь, светильники, термометры для кабин",
+      "amount": 73990,
+      "category": "capex",
+      "cost_type": "capex",
+      "allocation": "capex",
+      "accrual_period": "2026-08",
+      "recurrence": "one_off",
+      "confidence": "high"
+    },
+    {
+      "n": 17,
+      "name": "Мочалки, скрабы для продажи (закуп)",
+      "amount": 28990,
+      "category": "cogs_consumables",
+      "cost_type": "variable_goods",
+      "allocation": "goods_cogs",
+      "accrual_period": "2026-08",
+      "recurrence": "as_needed",
+      "note": "Закуп товарного запаса; продано за август заметно меньше — остаток переходит на следующие месяцы.",
+      "confidence": "high"
+    },
+    {
+      "n": 18,
+      "name": "Моющие средства для уборки",
+      "amount": 6800,
+      "category": "supplies",
+      "cost_type": "variable_cabin",
+      "allocation": "cabin_hour",
+      "accrual_period": "2026-08",
+      "recurrence": "monthly",
+      "note": "Не перепродаётся — это расход на обслуживание кабин.",
+      "confidence": "high"
+    },
+    {
+      "n": 19,
+      "name": "Продукты для кухни (мясо, рыба и т.д.)",
+      "amount": 200488,
+      "category": "cogs_food",
+      "cost_type": "variable_goods",
+      "allocation": "goods_cogs",
+      "accrual_period": "2026-08",
+      "recurrence": "as_needed",
+      "confidence": "high"
+    },
+    {
+      "n": 20,
+      "name": "ЦОН — оформление",
+      "amount": 280000,
+      "category": "admin",
+      "cost_type": "one_off",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "one_off",
+      "note": "Разовое оформление/регистрация. Самая крупная строка месяца — 20% всех расходов.",
+      "confidence": "high"
+    },
+    {
+      "n": 21,
+      "name": "Работа электрика, газовщика, технички",
+      "amount": 50000,
+      "category": "services",
+      "cost_type": "one_off",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "as_needed",
+      "note": "Прочтение профессий неуверенное; сумма читается чётко.",
+      "confidence": "medium"
+    },
+    {
+      "n": 22,
+      "name": "Бензин",
+      "amount": null,
+      "category": "transport",
+      "cost_type": "variable_other",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "monthly",
+      "note": "Сумма на листе не проставлена, в итог 1 393 691,22 не входит.",
+      "confidence": "high"
+    },
+    {
+      "n": 23,
+      "name": "Такси (ночь)",
+      "amount": null,
+      "category": "transport",
+      "cost_type": "variable_other",
+      "allocation": "overhead",
+      "accrual_period": "2026-08",
+      "recurrence": "monthly",
+      "note": "Сумма на листе не проставлена, в итог 1 393 691,22 не входит. Развоз персонала после ночных смен.",
+      "confidence": "high"
+    }
+  ],
+  "rollup": {
+    "by_category": {
+      "utilities": 211713.22,
+      "payroll": 230300,
+      "taxes": 78700,
+      "cogs_food": 200488,
+      "cogs_alcohol": 102660,
+      "cogs_drink": 90060,
+      "cogs_consumables": 28990,
+      "cogs_service": 18000,
+      "supplies": 6800,
+      "capex": 87990,
+      "admin": 287990,
+      "services": 50000,
+      "transport": null
+    },
+    "by_cost_type": {
+      "variable_cabin": 208863.22,
+      "variable_goods": 440198,
+      "fixed_monthly": 269990,
+      "fixed_quarterly": 9650,
+      "one_off": 377000,
+      "capex": 87990
+    },
+    "recurring_monthly_baseline": 928701.22,
+    "recurring_monthly_baseline_note": "Всё, кроме разовых и капитальных (позиции 8, 14, 15, 16, 20, 21) и без бензина/такси: 1 393 691,22 − 43 000 − 4 000 − 50 000 − 280 000 − 14 000 − 73 990 = 928 701,22; из них закуп товара 440 198 — переменный, но повторяющийся.",
+    "cabin_attributable_cash_august": 211713.22,
+    "cabin_attributable_cash_note": "Позиции 1-4 + 9 (+ 6 800 моющих = 218 513,22 с уборкой). Позиции 1-3 — за июль, для честной августовской себестоимости их надо масштабировать по росту загрузки."
+  }
+}
